@@ -1,5 +1,17 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div>
+    <h1>Przychody</h1>
+    <DataTable></DataTable>
   </div>
 </template>
+<script>
+// @ is an alias to /src
+import DataTable from '@/components/DataTable.vue'
+
+export default {
+  name: 'about',
+  components: {
+    DataTable
+  }
+}
+</script>

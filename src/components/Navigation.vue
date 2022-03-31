@@ -39,7 +39,7 @@ export default {
         id: 1,
         icon: 'mdi-wallet-outline',
         title: 'Przychody',
-        url: '/about'
+        url: '/expenses'
       },
       {
         id: 2,

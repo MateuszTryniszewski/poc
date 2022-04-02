@@ -44,7 +44,6 @@ router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some((route) => route.meta.requiresAuth)
 
   if (requiresAuth) {
-    console.log('auth', auth)
     if (!auth.currentUser) {
       next({ name: 'Login' })
     } else {

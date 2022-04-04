@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import LoginComponent from '@/components/LoginComponent'
-import RegisterComponent from '@/components/RegisterComponent'
-import TopBar from '../components/TopBar'
+import LoginComponent from '@/components/LoginComponent';
+import RegisterComponent from '@/components/RegisterComponent';
+import TopBar from '../components/TopBar';
 
 // @ is an alias to /src
 
@@ -36,12 +36,12 @@ export default {
   components: {
     LoginComponent,
     RegisterComponent,
-    TopBar
+    TopBar,
   },
 
   data: () => ({
     isLogin: true,
-    errorMessage: null
+    errorMessage: null,
   }),
 
   computed: {
@@ -50,13 +50,11 @@ export default {
   methods: {
   },
 
-  created () {
-  }
-}
+  created() {
+  },
+};
 </script>
 
 <style lang="scss">
-.v-app-bar__nav-icon {
-  display: none
-}
+
 </style>

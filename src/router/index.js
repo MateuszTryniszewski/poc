@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
-import { auth } from '../firebase'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Home from '../views/Home';
+import Login from '../views/Login';
+import { auth } from '../firebase';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -12,46 +12,57 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
   },
   {
     path: '/expenses',
     name: 'Przychody',
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
     },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Expenses.vue')
-  }
+    component: () => import(/* webpackChunkName: "about" */ '../views/Expenses'),
+  },
+  {
+    path: '/revenues',
+    name: 'Koszty',
+    meta: {
+      requiresAuth: true,
+    },
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/Revenues'),
+  },
 
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
 router.beforeEach(async (to, from, next) => {
-  const requiresAuth = to.matched.some((route) => route.meta.requiresAuth)
+  const requiresAuth = to.matched.some((route) => route.meta.requiresAuth);
 
   if (requiresAuth) {
     if (!auth.currentUser) {
-      next({ name: 'Login' })
+      next({ name: 'Login' });
     } else {
-      next()
+      next();
     }
   } else {
-    next()
+    next();
   }
-})
+});
 
-export default router
+export default router;

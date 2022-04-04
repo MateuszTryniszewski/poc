@@ -1,5 +1,10 @@
 <template>
-  <v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
+  <v-data-table
+    :headers="headers"
+    :items="rows"
+    sort-by="calories"
+    class="elevation-1"
+    :items-per-page="-1">
     <template v-slot:top>
       <v-toolbar flat>
         <v-dialog v-model="dialog" max-width="500px">
@@ -14,20 +19,37 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.name" label="Dessert name" />
+                  <v-col cols="12">
+                    <v-text-field v-model="item.id" label="Nazwa" outlined hidden />
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.calories" label="Calories" />
+                  <v-col cols="12">
+                    <v-text-field v-model="item.title" label="Nazwa" outlined />
                   </v-col>
-                  <v-col cols="12" sm="6" md="4" >
-                    <v-text-field v-model="editedItem.fat" label="Fat (g)" />
+                  <v-col cols="12">
+                    <v-select v-model="item.category"
+                      outlined :items="categories" label="Kategoria" />
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.carbs" label="Carbs (g)" />
+                  <v-col cols="12">
+                    <v-menu v-model="menu"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      outlined
+                      min-width="auto">
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field v-model="item.date" label="Data"
+                          readonly
+                          outlined
+                          v-bind="attrs"
+                          v-on="on" />
+                      </template>
+                    <v-date-picker v-model="item.date" no-title scrollable @input="menu = false">
+                    </v-date-picker>
+                    </v-menu>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.protein" label="Protein (g)" />
+                  <v-col cols="12">
+                  <v-text-field v-model.number="item.amount" type="number" label="Kwota" outlined>
+                    </v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -35,8 +57,8 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+              <v-btn color="secondary" text @click="close">Zamknij</v-btn>
+              <v-btn color="blue darken-1" @click="save"> Zapisz </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -52,6 +74,18 @@
         </v-dialog>
       </v-toolbar>
     </template>
+    <template v-slot:item.category="{ item }">
+        <v-icon>{{ item.category.icon ? item.category.icon : 'mdi-car ' }}</v-icon>
+        {{ item.category.name ? item.category.name : item.category.text }}
+    </template>
+     <template v-slot:item.amount="{ item }">
+      <v-chip
+        color="primary"
+        dark
+      >
+        {{ item.amount }} PLN
+      </v-chip>
+    </template>
     <template v-slot:item.actions="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
       <v-icon small @click="deleteItem(item)">mdi-delete </v-icon>
@@ -66,176 +100,135 @@
 export default {
   name: 'DataTable',
 
+  props: {
+    rows: {
+      type: Array,
+    },
+  },
+
   data: () => ({
+    categories: [
+      {
+        text: 'Mieszkanie',
+        value: 1,
+        icon: '',
+        color: 'primary',
+      },
+      {
+        text: 'Samochód',
+        value: 2,
+        icon: '',
+        color: 'error',
+      },
+      {
+        text: 'Jedzenie',
+        value: 3,
+        icon: '',
+        color: 'success',
+      },
+      {
+        text: 'Rozrywka',
+        value: 4,
+        icon: '',
+        color: 'warning',
+      },
+    ],
+    menu: false,
     dialog: false,
     dialogDelete: false,
     headers: [
       {
-        text: 'Dessert (100g serving)',
+        text: 'Nazwa',
         align: 'start',
         sortable: false,
-        value: 'name'
+        value: 'title',
       },
-      { text: 'Calories', value: 'calories' },
-      { text: 'Fat (g)', value: 'fat' },
-      { text: 'Carbs (g)', value: 'carbs' },
-      { text: 'Protein (g)', value: 'protein' },
-      { text: 'Actions', value: 'actions', sortable: false }
+      { text: 'Kategoria', value: 'category' },
+      { text: 'Data', value: 'date' },
+      { text: 'Kwota', value: 'amount' },
+      { text: 'Actions', value: 'actions', sortable: false },
     ],
     desserts: [],
-    editedIndex: -1,
-    editedItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
+    item: {
+      id: null,
+      title: null,
+      category: {
+        id: null,
+      },
+      date: (new Date(Date.now() - (new Date())
+        .getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      amount: null,
     },
     defaultItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
-    }
+      title: '',
+      category: {
+        id: null,
+      },
+      date: (new Date(Date.now() - (new Date())
+        .getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+      amount: null,
+    },
   }),
 
   computed: {
-    formTitle () {
-      return this.editedIndex === -1 ? 'Dodaj' : 'Edycja'
-    }
+    formTitle() {
+      return this.item?.name ? 'Edycja' : 'Dodaj';
+    },
   },
 
   watch: {
-    dialog (val) {
-      val || this.close()
+    dialog(val) {
+      // eslint-disable-next-line no-unused-expressions
+      val || this.close();
     },
-    dialogDelete (val) {
-      val || this.closeDelete()
-    }
+    dialogDelete(val) {
+      // eslint-disable-next-line no-unused-expressions
+      val || this.closeDelete();
+    },
   },
 
-  created () {
-    this.initialize()
+  created() {
+    this.initialize();
   },
 
   methods: {
-    initialize () {
-      this.desserts = [
-        {
-          name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0
-        },
-        {
-          name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3
-        },
-        {
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0
-        },
-        {
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0
-        },
-        {
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7
-        }
-      ]
+    initialize() {
+
     },
 
-    editItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
+    editItem(item) {
+      console.log('item', item);
+      this.item = { ...item };
+      this.dialog = true;
     },
 
-    deleteItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialogDelete = true
+    deleteItem(item) {
+      this.$emit('deleteItem', item);
     },
 
-    deleteItemConfirm () {
-      this.desserts.splice(this.editedIndex, 1)
-      this.closeDelete()
+    deleteItemConfirm() {
+      this.closeDelete();
     },
 
-    close () {
-      this.dialog = false
+    close() {
+      this.dialog = false;
       this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
+        this.item = { ...this.defaultItem };
+      });
     },
 
-    closeDelete () {
-      this.dialogDelete = false
+    closeDelete() {
+      this.dialogDelete = false;
       this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
+        this.item = { ...this.defaultItem };
+      });
     },
 
-    save () {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
-      } else {
-        this.desserts.push(this.editedItem)
-      }
-      this.close()
-    }
-  }
-}
+    save() {
+      this.item.category = this.categories.find(({ value }) => value === this.item.category);
+      this.$emit('addItem', this.item);
+      this.close();
+    },
+  },
+};
 </script>

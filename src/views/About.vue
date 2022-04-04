@@ -6,12 +6,13 @@
 </template>
 <script>
 // @ is an alias to /src
-import DataTable from '@/components/DataTable.vue'
+import DataTable from '@/components/DataTable';
 
 export default {
   name: 'about',
   components: {
-    DataTable
-  }
-}
+    DataTable,
+  },
+};
+
 </script>

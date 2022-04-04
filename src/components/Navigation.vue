@@ -39,33 +39,33 @@ export default {
         id: 1,
         icon: 'mdi-wallet-outline',
         title: 'Przychody',
-        url: '/expenses'
+        url: '/expenses',
       },
       {
         id: 2,
         icon: 'mdi-cart-outline',
         title: 'Koszty',
-        url: '/home'
+        url: '/revenues',
       },
       {
         id: 3,
         icon: 'mdi-credit-card-outline',
         title: 'Płatności cykliczne',
-        url: '/homeView'
+        url: '/homeView',
       },
       {
         id: 4,
         icon: 'mdi-piggy-bank-outline',
         title: 'Skarbonka',
-        url: '/gain'
-      }
-    ]
+        url: '/gain',
+      },
+    ],
   }),
 
   computed: {
-    drawerState () {
-      return this.$store.state.drawer
-    }
-  }
-}
+    drawerState() {
+      return this.$store.state.drawer;
+    },
+  },
+};
 </script>

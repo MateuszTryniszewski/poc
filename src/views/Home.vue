@@ -16,14 +16,14 @@
 
 <script>
 // @ is an alias to /src
-import Navigation from '../components/Navigation'
-import TopBar from '../components/TopBar'
+import Navigation from '../components/Navigation';
+import TopBar from '../components/TopBar';
 
 export default {
   name: 'Home',
   components: {
     Navigation,
-    TopBar
-  }
-}
+    TopBar,
+  },
+};
 </script>

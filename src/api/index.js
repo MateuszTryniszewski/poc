@@ -1,6 +1,6 @@
 import { db } from '@/firebase';
 import {
-  collection, getDocs, addDoc, setDoc, doc, deleteDoc,
+  collection, getDocs, addDoc, updateDoc, doc, deleteDoc,
 } from 'firebase/firestore';
 import store from '../store';
 
@@ -29,7 +29,7 @@ class ApiService {
   }
 
   updateDoc(id, item) {
-    return setDoc(doc(db, this.relativePath(), id), item, { merge: true });
+    return updateDoc(doc(db, this.relativePath(), id), item);
   }
 
   delete(id) {

@@ -20,13 +20,10 @@
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field v-model="item.id" label="Nazwa" outlined hidden />
-                  </v-col>
-                  <v-col cols="12">
                     <v-text-field v-model="item.title" label="Nazwa" outlined />
                   </v-col>
                   <v-col cols="12">
-                    <v-select v-model="item.category"
+                    <v-select v-model="item.category.value"
                       outlined :items="categories" label="Kategoria" />
                   </v-col>
                   <v-col cols="12">
@@ -87,7 +84,7 @@
       </v-chip>
     </template>
     <template v-slot:item.actions="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+      <v-icon small class="mr-2" @click="editItem(item.id)">mdi-pencil</v-icon>
       <v-icon small @click="deleteItem(item)">mdi-delete </v-icon>
     </template>
     <template v-slot:no-data>
@@ -196,9 +193,9 @@ export default {
 
     },
 
-    editItem(item) {
-      console.log('item', item);
-      this.item = { ...item };
+    editItem(id) {
+      console.log('item', id);
+      this.item = this.rows.find((doc) => doc.id === id);
       this.dialog = true;
     },
 
@@ -225,8 +222,8 @@ export default {
     },
 
     save() {
-      this.item.category = this.categories.find(({ value }) => value === this.item.category);
-      this.$emit('addItem', this.item);
+      // eslint-disable-next-line no-unused-expressions
+      this.item.id ? this.$emit('editItem', this.item) : this.$emit('addItem', this.item);
       this.close();
     },
   },

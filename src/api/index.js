@@ -20,20 +20,22 @@ class ApiService {
     return collection(db, this.relativePath());
   }
 
-  get(id) {
-    return id ? doc(db, this.relativePath(), id) : getDocs(collection(db, this.relativePath()));
+  get() {
+    return this.id
+      ? doc(db, this.relativePath(), this.id)
+      : getDocs(collection(db, this.relativePath()));
   }
 
   createDoc() {
     return addDoc(collection(db, this.relativePath()), this.item);
   }
 
-  updateDoc(id, item) {
-    return updateDoc(doc(db, this.relativePath(), id), item);
+  updateDoc() {
+    return updateDoc(doc(db, this.relativePath(), this.id), this.item);
   }
 
-  delete(id) {
-    return deleteDoc(doc(db, this.relativePath(), id));
+  delete() {
+    return deleteDoc(doc(db, this.relativePath(), this.id));
   }
 }
 

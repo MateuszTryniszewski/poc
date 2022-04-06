@@ -37,10 +37,10 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, email } from 'vuelidate/lib/validators'
-import { auth } from '@/firebase'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { validationMixin } from 'vuelidate';
+import { required, email } from 'vuelidate/lib/validators';
+import { auth } from '@/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 // @ is an alias to /src
 
@@ -48,7 +48,7 @@ export default {
   mixins: [validationMixin],
   validations: {
     email: { required, email },
-    password: { required }
+    password: { required },
   },
 
   name: 'LoginComponent',
@@ -58,36 +58,39 @@ export default {
   data: () => ({
     email: '',
     password: '',
-    showPass: false
+    showPass: false,
   }),
 
   computed: {
-    emailErrors () {
-      const errors = []
-      if (!this.$v.email.$dirty) return errors
-      !this.$v.email.email && errors.push('Wprowadź prawidłowy email')
-      !this.$v.email.required && errors.push('E-mail jest wymagany')
-      return errors
-    }
+    emailErrors() {
+      const errors = [];
+      if (!this.$v.email.$dirty) return errors;
+      // eslint-disable-next-line no-unused-expressions
+      !this.$v.email.email && errors.push('Wprowadź prawidłowy email');
+      // eslint-disable-next-line no-unused-expressions
+      !this.$v.email.required && errors.push('E-mail jest wymagany');
+      return errors;
+    },
   },
 
   methods: {
-    submit () {
-      this.$v.$touch()
+    submit() {
+      this.$v.$touch();
     },
-    onLogin () {
-      this.$v.$touch()
+    onLogin() {
+      this.$v.$touch();
       signInWithEmailAndPassword(auth, this.email, this.password).then((result) => {
-        const { email, uid } = result.user
-        this.$store.dispatch('setUser', { email, uid })
-        this.$router.push('/')
+        // eslint-disable-next-line no-shadow
+        const { email, uid } = result.user;
+        this.$store.dispatch('setUser', { email, uid });
+        this.$router.push('/');
       }).catch((err) => {
-        this.$emit('error', err.message)
-      })
-    }
+        this.$emit('error', err.message);
+      });
+    },
   },
 
-  created () {
-  }
-}
+  created() {
+  },
+};
 </script>

@@ -67,7 +67,8 @@ export default {
             this.rows.push({ id: change.doc.id, ...change.doc.data() });
           }
           if (change.type === 'modified') {
-            console.log('Modified city: ', change.doc.data());
+            const rowIndex = this.rows.findIndex((el) => el.id === change.doc.id);
+            this.rows.splice(rowIndex, 1, { id: change.doc.id, ...change.doc.data() });
           }
           if (change.type === 'removed') {
             this.rows = this.rows.filter((item) => item.id !== change.doc.id);
@@ -77,7 +78,7 @@ export default {
     },
 
     deleteRow(row) {
-      const del = new Api('expenses').delete(row.id);
+      const del = new Api('expenses', row.id).delete();
       del.then(() => {
         this.message = 'Usunięto wpis';
         // eslint-disable-next-line no-return-assign

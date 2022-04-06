@@ -55,10 +55,10 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, email, minLength } from 'vuelidate/lib/validators'
-import { auth } from '@/firebase'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { validationMixin } from 'vuelidate';
+import { required, email, minLength } from 'vuelidate/lib/validators';
+import { auth } from '@/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 // @ is an alias to /src
 
@@ -69,7 +69,7 @@ export default {
     email: { required, email },
     select: { required },
     password: { required },
-    password2: { required }
+    password2: { required },
   },
 
   name: 'RegisterComponent',
@@ -81,39 +81,43 @@ export default {
     password: '',
     password2: '',
     showPass: false,
-    showPass2: false
+    showPass2: false,
   }),
 
   computed: {
-    nameErrors () {
-      const errors = []
-      if (!this.$v.name.$dirty) return errors
-      !this.$v.name.minLength && errors.push('Nazwa musi mieć przynajmniej 3 znaki')
-      !this.$v.name.required && errors.push('Nazwa jest wymagana.')
-      return errors
+    nameErrors() {
+      const errors = [];
+      if (!this.$v.name.$dirty) return errors;
+      // eslint-disable-next-line no-unused-expressions
+      !this.$v.name.minLength && errors.push('Nazwa musi mieć przynajmniej 3 znaki');
+      // eslint-disable-next-line no-unused-expressions
+      !this.$v.name.required && errors.push('Nazwa jest wymagana.');
+      return errors;
     },
-    emailErrors () {
-      const errors = []
-      if (!this.$v.email.$dirty) return errors
-      !this.$v.email.email && errors.push('Wprowadź prawidłowy email')
-      !this.$v.email.required && errors.push('E-mail jest wymagany')
-      return errors
-    }
+    emailErrors() {
+      const errors = [];
+      if (!this.$v.email.$dirty) return errors;
+      // eslint-disable-next-line no-unused-expressions
+      !this.$v.email.email && errors.push('Wprowadź prawidłowy email');
+      // eslint-disable-next-line no-unused-expressions
+      !this.$v.email.required && errors.push('E-mail jest wymagany');
+      return errors;
+    },
   },
 
   methods: {
-    register () {
-      this.$v.$touch()
+    register() {
+      this.$v.$touch();
       createUserWithEmailAndPassword(auth, this.email, this.password).then((result) => {
-        const user = result.user
-        console.log('user', user)
+        const { user } = result;
+        console.log('user', user);
       }).catch((err) => {
-        this.$emit('error', err.message)
-      })
-    }
+        this.$emit('error', err.message);
+      });
+    },
   },
 
-  created () {
-  }
-}
+  created() {
+  },
+};
 </script>

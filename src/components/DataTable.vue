@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="rounded">
     <v-data-table :headers="headers"
       :items="rows"
       :items-per-page="-1"
-      sort-by="calories"
-      class="elevation-1">
+      sort-by="date"
+      :sortDesc="true" class="rounded">
       <template v-slot:top>
         <v-toolbar flat>
           <v-btn color="primary" class="mb-2" @click="dialog = true"> Dodaj </v-btn>
@@ -17,9 +17,9 @@
           <span :class="`${item.color}--text`">{{ item.category.text }}</span>
       </template>
       <template v-slot:item.amount="{ item }">
-        <v-chip color="primary" dark>
+        <!-- <v-chip color="primary" dark> -->
           {{ item.amount }} PLN
-        </v-chip>
+        <!-- </v-chip> -->
       </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item.id)">mdi-pencil</v-icon>
@@ -143,7 +143,7 @@ export default {
       { text: 'Kategoria', value: 'category' },
       { text: 'Data', value: 'date' },
       { text: 'Kwota', value: 'amount' },
-      { text: 'Actions', value: 'actions', sortable: false },
+      { text: 'Akcje', value: 'actions', sortable: false },
     ],
     currentItem: {
       title: null,

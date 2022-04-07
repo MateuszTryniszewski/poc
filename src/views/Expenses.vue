@@ -5,15 +5,24 @@
     <v-main>
       <v-container class="py-8 px-6" fluid>
         <v-row>
-        <v-col cols="12">
-        <div>
-          <h1>Przychody</h1>
+          <v-col cols="12" class="py-0">
+          <h2>Przychody</h2>
+          </v-col>
+        </v-row>
+        <v-row>
+        <v-col cols="8">
           <DataTable
             :rows="rows"
             @deleteItem="deleteRow($event)"
             @addItem="addRow($event)"
-            @updateItem="updateRow($event)"></DataTable>
-        </div>
+            @updateItem="updateRow($event)"
+            class="rounded elevation-3" />
+        </v-col>
+         <v-col cols="4">
+        <Doughnut :chart-data="data"
+          :key="reRenderChart"
+          style="border: 1px solid #ccc;"
+          class="rounded pa-4 elevation-3" />
         </v-col>
       </v-row>
         <v-snackbar v-if="message"
@@ -32,29 +41,84 @@
 </v-app>
 </template>
 <script>
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-unused-expressions */
 // @ is an alias to /src
 import Api from '@/api';
+import { Doughnut } from 'vue-chartjs/legacy';
+import {
+  Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement,
+} from 'chart.js';
 import { onSnapshot } from 'firebase/firestore';
 import DataTable from '@/components/DataTable';
 import Navigation from '../components/Navigation';
 import TopBar from '../components/TopBar';
 
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement);
+
 export default {
-  name: 'about',
+  name: 'Expenses',
   components: {
     Navigation,
     TopBar,
     DataTable,
+    Doughnut,
   },
 
   data: () => ({
     rows: [],
     message: null,
+    reRenderChart: 0,
   }),
 
+  watch: {
+    'data.datasets': {
+      deep: true,
+      handler() {
+        // eslint-disable-next-line no-plusplus
+        this.reRenderChart++;
+      },
+    },
+  },
+
   computed: {
+    chartLabels() {
+      return (Object.keys(this.categoriesSum || 0));
+    },
+    chartValues() {
+      return Object.values(this.categoriesSum || 0);
+    },
+    data() {
+      const obj = {
+        labels: this.chartLabels || [],
+        datasets: [{
+          data: this.chartValues || [],
+          backgroundColor: [
+            'rgb(251, 140, 0)',
+            'rgb(25, 118, 210)',
+            'rgb(76, 175, 88)',
+            'rgb(255, 82, 82)',
+          ],
+          hoverOffset: 10,
+        }],
+      };
+      return obj;
+    },
     currentUser() {
       return this.$store?.getters?.currentUser;
+    },
+    categoriesSum() {
+      // eslint-disable-next-line no-return-assign
+      const summs = this.rows.reduce((a, b) => {
+        // eslint-disable-next-line semi
+        if (a[b.category.text] === undefined) {
+          a[b.category.text] = b.amount;
+        } else {
+          a[b.category.text] += b.amount;
+        }
+        return a;
+      }, {});
+      return summs;
     },
   },
 

@@ -107,13 +107,11 @@ export default {
     categories: [
       {
         text: 'Mieszkanie',
-        value: 1,
         icon: 'fa-solid fa-house',
         color: 'primary',
       },
       {
         text: 'Samochód',
-        value: 2,
         icon: 'fa-solid fa-car',
         color: 'error',
       },
@@ -205,7 +203,7 @@ export default {
 
     save() {
       this.currentItem.category = this.categories
-        .find((cat) => cat.value === this.currentItem.category.value);
+        .find((cat) => cat.text === this.currentItem.category.value);
       // eslint-disable-next-line no-unused-expressions
       this.currentItem.id
         ? this.$emit('updateItem', this.currentItem)

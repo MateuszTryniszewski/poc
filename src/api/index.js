@@ -1,6 +1,7 @@
 import { db } from '@/firebase';
 import {
   collection, getDocs, addDoc, updateDoc, doc, deleteDoc,
+  query, where,
 } from 'firebase/firestore';
 import store from '../store';
 
@@ -36,6 +37,10 @@ class ApiService {
 
   delete() {
     return deleteDoc(doc(db, this.relativePath(), this.id));
+  }
+
+  getCategories() {
+    return query(getDocs(collection(db, this.entity)), where('uid', '==', this.user));
   }
 }
 

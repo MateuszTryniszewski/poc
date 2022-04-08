@@ -42,7 +42,6 @@
 </template>
 <script>
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-expressions */
 // @ is an alias to /src
 import Api from '@/api';
 import { Doughnut } from 'vue-chartjs/legacy';
@@ -51,6 +50,7 @@ import {
 } from 'chart.js';
 import { onSnapshot } from 'firebase/firestore';
 import DataTable from '@/components/DataTable';
+import { mapActions } from 'vuex';
 import Navigation from '../components/Navigation';
 import TopBar from '../components/TopBar';
 
@@ -94,7 +94,7 @@ export default {
         datasets: [{
           data: this.chartValues || [],
           backgroundColor: [
-            'rgb(251, 140, 0)',
+            '#FB8C00FF',
             'rgb(25, 118, 210)',
             'rgb(76, 175, 88)',
             'rgb(255, 82, 82)',
@@ -108,9 +108,7 @@ export default {
       return this.$store?.getters?.currentUser;
     },
     categoriesSum() {
-      // eslint-disable-next-line no-return-assign
       const summs = this.rows.reduce((a, b) => {
-        // eslint-disable-next-line semi
         if (a[b.category.text] === undefined) {
           a[b.category.text] = b.amount;
         } else {
@@ -167,10 +165,15 @@ export default {
         console.log(err);
       });
     },
+    ...mapActions({
+      getCategories: 'categories/getCategories',
+    }),
   },
 
   created() {
     this.getData();
+    console.log('store', this.$store);
+    this.getCategories();
   },
 };
 </script>

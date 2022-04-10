@@ -172,7 +172,6 @@ export default {
 
   created() {
     this.getData();
-    console.log('store', this.$store);
     this.getCategories();
   },
 };

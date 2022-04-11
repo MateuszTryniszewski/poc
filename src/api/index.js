@@ -3,6 +3,7 @@ import {
   collection, getDocs, addDoc, updateDoc, doc, deleteDoc,
   query, where,
 } from 'firebase/firestore';
+// eslint-disable-next-line import/no-cycle
 import store from '../store';
 
 class ApiService {
@@ -39,8 +40,13 @@ class ApiService {
     return deleteDoc(doc(db, this.relativePath(), this.id));
   }
 
-  getCategories() {
-    return query(getDocs(collection(db, this.entity)), where('uid', '==', this.user));
+  async getCategories() {
+    const q = query(collection(db, this.entity), where('uid', 'in', [this.user, 'global']));
+    const querySnapshot = await getDocs(q);
+    // querySnapshot.forEach((item) => {
+    //   console.log(item.id, ' => ', item.data());
+    // });
+    return querySnapshot;
   }
 }
 

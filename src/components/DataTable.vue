@@ -101,6 +101,9 @@ export default {
     rows: {
       type: Array,
     },
+    headers: {
+      type: Array,
+    },
   },
 
   data: () => ({
@@ -117,13 +120,11 @@ export default {
       },
       {
         text: 'Jedzenie',
-        value: 3,
         icon: 'fa-solid fa-utensils',
         color: 'success',
       },
       {
         text: 'Rozrywka',
-        value: 4,
         icon: 'fa-solid fa-gamepad',
         color: 'warning',
       },
@@ -131,18 +132,6 @@ export default {
     menu: false,
     dialog: false,
     dialogDelete: false,
-    headers: [
-      {
-        text: 'Nazwa',
-        align: 'start',
-        sortable: false,
-        value: 'title',
-      },
-      { text: 'Kategoria', value: 'category' },
-      { text: 'Data', value: 'date' },
-      { text: 'Kwota', value: 'amount' },
-      { text: 'Akcje', value: 'actions', sortable: false },
-    ],
     currentItem: {
       title: null,
       category: {

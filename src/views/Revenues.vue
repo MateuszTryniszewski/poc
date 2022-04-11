@@ -43,7 +43,7 @@ export default {
 
   methods: {
     async getData() {
-      const items = new Api('expenses').getAll();
+      const items = new Api('expenses').getCollection();
       items.then((result) => {
         result.forEach((doc) => {
           this.rows = doc.data();

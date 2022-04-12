@@ -3,13 +3,6 @@
       <v-card-title>Rejestracja</v-card-title>
       <v-card-text>
       <form>
-        <v-text-field v-model="name"
-          :error-messages="nameErrors"
-          label="Imię i nazwisko"
-          required
-          @input="$v.name.$touch()"
-          @blur="$v.name.$touch()"
-        ></v-text-field>
         <v-text-field
           v-model="email"
           :error-messages="emailErrors"

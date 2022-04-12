@@ -6,13 +6,13 @@
       <v-container class="py-8 px-6" fluid>
         <v-row>
           <v-col cols="12" class="py-0">
-          <h2>Koszty</h2>
+          <h2>Przychody</h2>
           </v-col>
         </v-row>
         <v-row>
         <v-col cols="8">
           <DataTable
-            :rows="rows"
+            :rows="categories"
             :headers="headers"
             @deleteItem="deleteRow($event)"
             @addItem="addRow($event)"
@@ -20,10 +20,6 @@
             class="rounded elevation-3" />
         </v-col>
          <v-col cols="4">
-        <Doughnut :chart-data="data"
-          :key="reRenderChart"
-          style="border: 1px solid #ccc;"
-          class="rounded pa-4 elevation-3" />
         </v-col>
       </v-row>
         <v-snackbar v-if="message"
@@ -45,111 +41,64 @@
 /* eslint-disable no-param-reassign */
 // @ is an alias to /src
 import Api from '@/api';
-import { Doughnut } from 'vue-chartjs/legacy';
-import {
-  Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement,
-} from 'chart.js';
-import { onSnapshot } from 'firebase/firestore';
+// import { onSnapshot } from 'firebase/firestore';
 import DataTable from '@/components/DataTable';
 import { mapActions } from 'vuex';
 import Navigation from '../components/Navigation';
 import TopBar from '../components/TopBar';
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement);
-
 export default {
-  name: 'Expenses',
+  name: 'Settings',
   components: {
     Navigation,
     TopBar,
     DataTable,
-    Doughnut,
   },
 
   data: () => ({
     rows: [],
     message: null,
-    reRenderChart: 0,
     headers: [
       {
         text: 'Nazwa',
-        value: 'title',
+        value: 'text',
         align: 'start',
         sortable: false,
       },
-      { text: 'Kategoria', value: 'category' },
-      { text: 'Data', value: 'date' },
-      { text: 'Kwota', value: 'amount' },
+      { text: 'Kolor', value: 'color' },
+      { text: 'Ikona', value: 'icon' },
+      { text: 'Przychód', value: 'revenues' },
+      { text: 'Koszt', value: 'expenses' },
       { text: 'Akcje', value: 'actions', sortable: false },
     ],
   }),
 
-  watch: {
-    'data.datasets': {
-      deep: true,
-      handler() {
-        // eslint-disable-next-line no-plusplus
-        this.reRenderChart++;
-      },
-    },
-  },
-
   computed: {
-    chartLabels() {
-      return (Object.keys(this.categoriesSum || 0));
-    },
-    chartValues() {
-      return Object.values(this.categoriesSum || 0);
-    },
-    data() {
-      const obj = {
-        labels: this.chartLabels || [],
-        datasets: [{
-          data: this.chartValues || [],
-          backgroundColor: [
-            '#FB8C00FF',
-            'rgb(25, 118, 210)',
-            'rgb(76, 175, 88)',
-            'rgb(255, 82, 82)',
-          ],
-          hoverOffset: 10,
-        }],
-      };
-      return obj;
-    },
     currentUser() {
       return this.$store?.getters?.currentUser;
     },
-    categoriesSum() {
-      const summs = this.rows.reduce((a, b) => {
-        if (a[b.category.text] === undefined) {
-          a[b.category.text] = b.amount;
-        } else {
-          a[b.category.text] += b.amount;
-        }
-        return a;
-      }, {});
-      return summs;
+    categories() {
+      return this.$store?.state?.categories?.categories;
     },
   },
 
   methods: {
     getData() {
-      const items = new Api('expenses').getCollection();
-      onSnapshot(items, (querySnapshot) => {
-        querySnapshot.docChanges().forEach((change) => {
-          if (change.type === 'added') {
-            this.rows.push({ id: change.doc.id, ...change.doc.data() });
-          }
-          if (change.type === 'modified') {
-            const rowIndex = this.rows.findIndex((el) => el.id === change.doc.id);
-            this.rows.splice(rowIndex, 1, { id: change.doc.id, ...change.doc.data() });
-          }
-          if (change.type === 'removed') {
-            this.rows = this.rows.filter((item) => item.id !== change.doc.id);
-          }
-        });
-      });
+      // const items = new Api('expenses').getCollection();
+      // onSnapshot(items, (querySnapshot) => {
+      //   querySnapshot.docChanges().forEach((change) => {
+      //     if (change.type === 'added') {
+      //       this.rows.push({ id: change.doc.id, ...change.doc.data() });
+      //     }
+      //     if (change.type === 'modified') {
+      //       const rowIndex = this.rows.findIndex((el) => el.id === change.doc.id);
+      //       this.rows.splice(rowIndex, 1, { id: change.doc.id, ...change.doc.data() });
+      //     }
+      //     if (change.type === 'removed') {
+      //       this.rows = this.rows.filter((item) => item.id !== change.doc.id);
+      //     }
+      //   });
+      // });
     },
 
     deleteRow(row) {
@@ -184,7 +133,7 @@ export default {
   },
 
   created() {
-    this.getData();
+    console.log('this.$soter', this.$store);
     this.getCategories();
   },
 };

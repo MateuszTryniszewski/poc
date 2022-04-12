@@ -39,13 +39,13 @@ export default {
         id: 1,
         icon: 'mdi-wallet-outline',
         title: 'Przychody',
-        url: '/expenses',
+        url: '/revenues',
       },
       {
         id: 2,
         icon: 'mdi-cart-outline',
         title: 'Koszty',
-        url: '/revenues',
+        url: '/expenses',
       },
       {
         id: 3,
@@ -58,6 +58,12 @@ export default {
         icon: 'mdi-piggy-bank-outline',
         title: 'Skarbonka',
         url: '/gain',
+      },
+      {
+        id: 5,
+        icon: 'fa-solid fa-gears',
+        title: 'Ustawienia',
+        url: '/settings',
       },
     ],
   }),

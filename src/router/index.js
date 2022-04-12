@@ -22,25 +22,30 @@ const routes = [
   },
   {
     path: '/expenses',
-    name: 'Przychody',
-    meta: {
-      requiresAuth: true,
-    },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Expenses'),
-  },
-  {
-    path: '/revenues',
     name: 'Koszty',
     meta: {
       requiresAuth: true,
     },
+    component: () => import(/* webpackChunkName: "about" */ '../views/Expenses'),
+  },
+  {
+    path: '/revenues',
+    name: 'Przychody',
+    meta: {
+      requiresAuth: true,
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/Revenues'),
+  },
+  {
+    path: '/settings',
+    name: 'Konfiguracja',
+    meta: {
+      requiresAuth: true,
+    },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Revenues'),
+    component: () => import(/* webpackChunkName: "about" */ '../views/Settings'),
   },
 
 ];

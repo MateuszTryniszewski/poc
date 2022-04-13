@@ -13,7 +13,7 @@
         <v-col cols="8">
           <DataTable
             :rows="rows"
-            :headers="headers"
+            :headers="expensesTableHeaders"
             @deleteItem="deleteRow($event)"
             @addItem="addRow($event)"
             @updateItem="updateRow($event)"
@@ -70,16 +70,17 @@ export default {
     rows: [],
     message: null,
     reRenderChart: 0,
-    headers: [
+    expensesTableHeaders: [
       {
         text: 'Nazwa',
         value: 'title',
         align: 'start',
         sortable: false,
+        type: 'text',
       },
-      { text: 'Kategoria', value: 'category' },
-      { text: 'Data', value: 'date' },
-      { text: 'Kwota', value: 'amount' },
+      { text: 'Kategoria', value: 'category', type: 'options' },
+      { text: 'Data', value: 'date', type: 'date' },
+      { text: 'Kwota', value: 'amount', type: 'number' },
       { text: 'Akcje', value: 'actions', sortable: false },
     ],
   }),

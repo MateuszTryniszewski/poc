@@ -6,14 +6,14 @@
       <v-container class="py-8 px-6" fluid>
         <v-row>
           <v-col cols="12" class="py-0">
-          <h2>Przychody</h2>
+          <h2>Ustawienia</h2>
           </v-col>
         </v-row>
         <v-row>
-        <v-col cols="8">
+        <v-col cols="6">
           <DataTable
             :rows="categories"
-            :headers="headers"
+            :headers="categoriesTableHeaders"
             @deleteItem="deleteRow($event)"
             @addItem="addRow($event)"
             @updateItem="updateRow($event)"
@@ -58,17 +58,18 @@ export default {
   data: () => ({
     rows: [],
     message: null,
-    headers: [
+    categoriesTableHeaders: [
       {
         text: 'Nazwa',
         value: 'text',
         align: 'start',
         sortable: false,
+        type: 'text',
       },
-      { text: 'Kolor', value: 'color' },
-      { text: 'Ikona', value: 'icon' },
-      { text: 'Przychód', value: 'revenues' },
-      { text: 'Koszt', value: 'expenses' },
+      { text: 'Kolor', value: 'color', type: 'text' },
+      { text: 'Ikona', value: 'icon', type: 'colors' },
+      { text: 'Przychód', value: 'revenues', type: 'boolean' },
+      { text: 'Koszt', value: 'expenses', type: 'boolean' },
       { text: 'Akcje', value: 'actions', sortable: false },
     ],
   }),

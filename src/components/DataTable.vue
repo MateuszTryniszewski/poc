@@ -3,8 +3,9 @@
     <v-data-table :headers="headers"
       :items="rows"
       :items-per-page="-1"
+      :sortDesc="true"
       sort-by="date"
-      :sortDesc="true" class="rounded">
+      class="rounded">
       <template v-slot:top>
         <v-toolbar flat>
           <v-btn color="primary" class="mb-2" @click="dialog = true"> Dodaj </v-btn>
@@ -20,6 +21,16 @@
         <!-- <v-chip color="primary" dark> -->
           {{ item.amount }} PLN
         <!-- </v-chip> -->
+      </template>
+      <template v-slot:item.color="{ item }">
+        <v-chip :color="item.color">
+          {{ item.color }}
+        </v-chip>
+      </template>
+      <template v-slot:item.icon="{ item }">
+          <v-icon dense class="mr-2">
+          {{ item.icon }}
+          </v-icon>
       </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="editItem(item.id)">mdi-pencil</v-icon>
@@ -46,23 +57,29 @@
 
         <v-card-text>
           <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field v-model="currentItem.title" label="Nazwa" outlined />
-              </v-col>
-              <v-col cols="12">
-                <v-select v-model="currentItem.category.value"
-                  outlined :items="categories" label="Kategoria" />
-              </v-col>
-              <v-col cols="12">
-                <v-menu v-model="menu"
+            <v-row no-gutters>
+              <v-col v-for="(header, index) in headers" :key="index" cols="12">
+                <v-text-field v-if="header.type === 'text'"
+                  v-model="currentItem.title"
+                  :label="header.text"
+                  outlined
+                  />
+                <v-select v-if="header.type === 'options'"
+                  v-model="currentItem.category.text"
+                  :items="categories"
+                  :label="header.text"
+                  outlined
+                  />
+                <v-menu v-if="header.type === 'date'"
+                  v-model="menu"
                   :close-on-content-click="false"
                   transition="scale-transition"
                   offset-y
                   outlined
                   min-width="auto">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-text-field v-model="currentItem.date" label="Data"
+                    <v-text-field v-model="currentItem.date"
+                      :label="header.text"
                       readonly
                       outlined
                       v-bind="attrs"
@@ -71,11 +88,26 @@
                 <v-date-picker v-model="currentItem.date" no-title scrollable @input="menu = false">
                 </v-date-picker>
                 </v-menu>
-              </v-col>
-              <v-col cols="12">
-              <v-text-field v-model.number="currentItem.amount"
-                type="number" label="Kwota" outlined>
+                <v-text-field v-if="header.type === 'number'"
+                  v-model.number="currentItem.amount"
+                  :label="header.text"
+                  type="number"
+                  outlined>
                 </v-text-field>
+                <v-switch v-if="header.type === 'boolean'"
+                  v-model="header.value"
+                  :label="header.text" />
+                <div v-if="header.type === 'colors'">
+                  <label>{{ header.text }}</label>
+                  <v-color-picker v-model="test"
+                    :swatches="swatches"
+                    show-swatches
+                    hide-canvas
+                    hide-inputs
+                    hide-mode-switch
+                    hide-sliders
+                    width="auto" />
+                </div>
               </v-col>
             </v-row>
           </v-container>
@@ -128,6 +160,10 @@ export default {
         icon: 'fa-solid fa-gamepad',
         color: 'warning',
       },
+    ],
+    test: '',
+    swatches: [
+      ['#2196f3'], ['#4caf50'], ['#ff9800'], ['#9c27b0'], ['#673ab7'], ['#f44336'], ['#009688'],
     ],
     menu: false,
     dialog: false,
@@ -192,7 +228,7 @@ export default {
 
     save() {
       this.currentItem.category = this.categories
-        .find((cat) => cat.text === this.currentItem.category.value);
+        .find((cat) => cat.text === this.currentItem.category.text);
       // eslint-disable-next-line no-unused-expressions
       this.currentItem.id
         ? this.$emit('updateItem', this.currentItem)

@@ -26,7 +26,7 @@ export default {
       // const fetch = new Api('categories').getCategories();
       const fetch = await new Api('categories').getCategories();
       fetch.forEach((item) => {
-        cat.push(item.data());
+        cat.push({ id: item.id, ...item.data() });
       });
       commit('SET_CATEGORIES', cat);
     },

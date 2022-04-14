@@ -39,8 +39,6 @@
 </template>
 <script>
 /* eslint-disable no-param-reassign */
-// @ is an alias to /src
-import Api from '@/api';
 // import { onSnapshot } from 'firebase/firestore';
 import DataTable from '@/components/DataTable';
 import { mapActions } from 'vuex';
@@ -66,8 +64,8 @@ export default {
         sortable: false,
         type: 'text',
       },
-      { text: 'Kolor', value: 'color', type: 'text' },
-      { text: 'Ikona', value: 'icon', type: 'colors' },
+      { text: 'Ikona', value: 'icon', type: 'text' },
+      { text: 'Kolor', value: 'color', type: 'colors' },
       { text: 'Przychód', value: 'revenues', type: 'boolean' },
       { text: 'Koszt', value: 'expenses', type: 'boolean' },
       { text: 'Akcje', value: 'actions', sortable: false },
@@ -84,57 +82,20 @@ export default {
   },
 
   methods: {
-    getData() {
-      // const items = new Api('expenses').getCollection();
-      // onSnapshot(items, (querySnapshot) => {
-      //   querySnapshot.docChanges().forEach((change) => {
-      //     if (change.type === 'added') {
-      //       this.rows.push({ id: change.doc.id, ...change.doc.data() });
-      //     }
-      //     if (change.type === 'modified') {
-      //       const rowIndex = this.rows.findIndex((el) => el.id === change.doc.id);
-      //       this.rows.splice(rowIndex, 1, { id: change.doc.id, ...change.doc.data() });
-      //     }
-      //     if (change.type === 'removed') {
-      //       this.rows = this.rows.filter((item) => item.id !== change.doc.id);
-      //     }
-      //   });
-      // });
-    },
+    ...mapActions('categories', ['deleteRow', 'addRow', 'updateRow', 'getCategories']),
 
     deleteRow(row) {
-      const del = new Api('expenses', row.id).delete();
-      del.then(() => {
-        this.message = 'Usunięto wpis';
-        // eslint-disable-next-line no-return-assign
-        setTimeout(() => this.message = null, 3000);
-      }).catch((err) => {
-        console.log('err', err);
-      });
+      this.deleteRow(row);
     },
     addRow(row) {
-      const add = new Api('expenses', null, row).createDoc();
-      add.then((result) => {
-        console.log(result);
-      }).catch((err) => {
-        console.log(err);
-      });
+      this.addRow(row);
     },
     updateRow(row) {
-      const add = new Api('expenses', row.id, row).updateDoc();
-      add.then((result) => {
-        console.log(result);
-      }).catch((err) => {
-        console.log(err);
-      });
+      this.updateRow(row);
     },
-    ...mapActions({
-      getCategories: 'categories/getCategories',
-    }),
   },
 
   created() {
-    console.log('this.$soter', this.$store);
     this.getCategories();
   },
 };

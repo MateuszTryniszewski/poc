@@ -60,11 +60,11 @@
             <v-row no-gutters>
               <v-col v-for="(header, index) in headers" :key="index" cols="12">
                 <v-text-field v-if="header.type === 'text'"
-                  v-model="currentItem.title"
+                  v-model="currentItem[header.value]"
                   :label="header.text"
                   outlined
                   />
-                <v-select v-if="header.type === 'options'"
+                <v-select v-if="header.inputType === 'options'"
                   v-model="currentItem.category.text"
                   :items="categories"
                   :label="header.text"
@@ -78,28 +78,31 @@
                   outlined
                   min-width="auto">
                   <template v-slot:activator="{ on, attrs }">
-                    <v-text-field v-model="currentItem.date"
+                    <v-text-field v-model="currentItem[header.value]"
                       :label="header.text"
                       readonly
                       outlined
                       v-bind="attrs"
                       v-on="on" />
                   </template>
-                <v-date-picker v-model="currentItem.date" no-title scrollable @input="menu = false">
+                <v-date-picker v-model="currentItem[header.value]"
+                  @input="menu = false"
+                  no-title
+                  scrollable >
                 </v-date-picker>
                 </v-menu>
                 <v-text-field v-if="header.type === 'number'"
-                  v-model.number="currentItem.amount"
+                  v-model.number="currentItem[header.value]"
                   :label="header.text"
                   type="number"
                   outlined>
                 </v-text-field>
                 <v-switch v-if="header.type === 'boolean'"
-                  v-model="header.value"
+                  v-model="currentItem[header.value]"
                   :label="header.text" />
                 <div v-if="header.type === 'colors'">
                   <label>{{ header.text }}</label>
-                  <v-color-picker v-model="test"
+                  <v-color-picker v-model="currentItem[header.value]"
                     :swatches="swatches"
                     show-swatches
                     hide-canvas
@@ -136,56 +139,21 @@ export default {
     headers: {
       type: Array,
     },
+    categories: {
+      type: Array,
+      default: () => [],
+    },
   },
 
   data: () => ({
-    categories: [
-      {
-        text: 'Mieszkanie',
-        icon: 'fa-solid fa-house',
-        color: 'primary',
-      },
-      {
-        text: 'Samochód',
-        icon: 'fa-solid fa-car',
-        color: 'error',
-      },
-      {
-        text: 'Jedzenie',
-        icon: 'fa-solid fa-utensils',
-        color: 'success',
-      },
-      {
-        text: 'Rozrywka',
-        icon: 'fa-solid fa-gamepad',
-        color: 'warning',
-      },
-    ],
-    test: '',
     swatches: [
       ['#2196f3'], ['#4caf50'], ['#ff9800'], ['#9c27b0'], ['#673ab7'], ['#f44336'], ['#009688'],
     ],
     menu: false,
     dialog: false,
     dialogDelete: false,
-    currentItem: {
-      title: null,
-      category: {
-        value: null,
-      },
-      date: (new Date(Date.now() - (new Date())
-        .getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-      amount: null,
-    },
-    defaultItem: {
-      title: '',
-      category: {
-        value: null,
-      },
-      date: (new Date(Date.now() - (new Date())
-        .getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-      amount: null,
-    },
+    currentItem: {},
+    defaultItem: {},
   }),
 
   computed: {
@@ -227,14 +195,42 @@ export default {
     },
 
     save() {
-      this.currentItem.category = this.categories
-        .find((cat) => cat.text === this.currentItem.category.text);
+      if (this.currentItem.category) {
+        this.currentItem.category = this.categories
+          .find((cat) => cat.text === this.currentItem.category.text);
+      }
       // eslint-disable-next-line no-unused-expressions
       this.currentItem.id
         ? this.$emit('updateItem', this.currentItem)
         : this.$emit('addItem', this.currentItem);
       this.close();
     },
+    makeInitialObject() {
+      const initObject = {};
+      this.headers.forEach((element) => {
+        if (element.type === 'date') {
+          initObject[element.value] = (new Date(Date.now() - (new Date())
+            .getTimezoneOffset() * 60000)).toISOString().substr(0, 10);
+        }
+
+        if (element.type === 'text' || element.type === 'number' || element.type === 'colors') {
+          initObject[element.value] = null;
+        }
+
+        if (element.type === 'boolean') {
+          initObject[element.value] = false;
+        }
+
+        if (element.type === 'object') {
+          initObject[element.value] = { value: null };
+        }
+      });
+      this.defaultItem = initObject;
+      this.currentItem = initObject;
+    },
+  },
+  created() {
+    this.makeInitialObject();
   },
 };
 </script>

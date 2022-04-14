@@ -14,39 +14,49 @@ class ApiService {
     this.user = store?.getters?.currentUser?.uid;
   }
 
-  relativePath() {
+  relativeUserPath() {
     return `${this.entity}/${this.user}/docs`;
   }
 
   getCollection() {
-    return collection(db, this.relativePath());
+    return collection(db, this.relativeUserPath());
   }
 
   get() {
     return this.id
-      ? doc(db, this.relativePath(), this.id)
-      : getDocs(collection(db, this.relativePath()));
+      ? doc(db, this.relativeUserPath(), this.id)
+      : getDocs(collection(db, this.relativeUserPath()));
   }
 
   createDoc() {
-    return addDoc(collection(db, this.relativePath()), this.item);
+    return addDoc(collection(db, this.relativeUserPath()), this.item);
   }
 
   updateDoc() {
-    return updateDoc(doc(db, this.relativePath(), this.id), this.item);
+    return updateDoc(doc(db, this.relativeUserPath(), this.id), this.item);
   }
 
   delete() {
-    return deleteDoc(doc(db, this.relativePath(), this.id));
+    return deleteDoc(doc(db, this.relativeUserPath(), this.id));
   }
+  // ==============
 
   async getCategories() {
     const q = query(collection(db, this.entity), where('uid', 'in', [this.user, 'global']));
-    const querySnapshot = await getDocs(q);
-    // querySnapshot.forEach((item) => {
-    //   console.log(item.id, ' => ', item.data());
-    // });
-    return querySnapshot;
+    // const querySnapshot = await getDocs(q);
+    return q; // querySnapshot;
+  }
+
+  createDoc2() {
+    return addDoc(collection(db, this.entity), this.item);
+  }
+
+  updateDoc2() {
+    return updateDoc(doc(db, this.entity, this.id), this.item);
+  }
+
+  delete2() {
+    return deleteDoc(doc(db, this.entity, this.id));
   }
 }
 

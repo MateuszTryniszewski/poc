@@ -14,6 +14,7 @@
           <DataTable
             :rows="rows"
             :headers="expensesTableHeaders"
+            :categories="categories"
             @deleteItem="deleteRow($event)"
             @addItem="addRow($event)"
             @updateItem="updateRow($event)"
@@ -51,7 +52,7 @@ import {
 } from 'chart.js';
 import { onSnapshot } from 'firebase/firestore';
 import DataTable from '@/components/DataTable';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import Navigation from '../components/Navigation';
 import TopBar from '../components/TopBar';
 
@@ -78,7 +79,12 @@ export default {
         sortable: false,
         type: 'text',
       },
-      { text: 'Kategoria', value: 'category', type: 'options' },
+      {
+        text: 'Kategoria',
+        value: 'category',
+        type: 'object',
+        inputType: 'options',
+      },
       { text: 'Data', value: 'date', type: 'date' },
       { text: 'Kwota', value: 'amount', type: 'number' },
       { text: 'Akcje', value: 'actions', sortable: false },
@@ -96,12 +102,18 @@ export default {
   },
 
   computed: {
+    ...mapGetters({
+      categories: 'categories/expensesCategories',
+    }),
+
     chartLabels() {
       return (Object.keys(this.categoriesSum || 0));
     },
+
     chartValues() {
       return Object.values(this.categoriesSum || 0);
     },
+
     data() {
       const obj = {
         labels: this.chartLabels || [],
@@ -118,9 +130,11 @@ export default {
       };
       return obj;
     },
+
     currentUser() {
       return this.$store?.getters?.currentUser;
     },
+
     categoriesSum() {
       const summs = this.rows.reduce((a, b) => {
         if (a[b.category.text] === undefined) {

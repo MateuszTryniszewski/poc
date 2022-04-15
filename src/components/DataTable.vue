@@ -160,6 +160,9 @@ export default {
     formTitle() {
       return this.currentItem?.title ? 'Edycja' : 'Dodaj';
     },
+    userId() {
+      return this.$store?.getters?.currentUser?.uid;
+    },
   },
 
   methods: {
@@ -206,15 +209,21 @@ export default {
       this.close();
     },
     makeInitialObject() {
-      const initObject = {};
+      const initObject = {
+        uid: this.userId,
+      };
       this.headers.forEach((element) => {
         if (element.type === 'date') {
           initObject[element.value] = (new Date(Date.now() - (new Date())
             .getTimezoneOffset() * 60000)).toISOString().substr(0, 10);
         }
 
-        if (element.type === 'text' || element.type === 'number' || element.type === 'colors') {
+        if (element.type === 'text' || element.type === 'number') {
           initObject[element.value] = null;
+        }
+
+        if (element.type === 'colors') {
+          initObject[element.value] = '';
         }
 
         if (element.type === 'boolean') {

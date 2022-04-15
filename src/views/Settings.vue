@@ -14,9 +14,9 @@
           <DataTable
             :rows="categories"
             :headers="categoriesTableHeaders"
-            @deleteItem="deleteRow($event)"
-            @addItem="addRow($event)"
-            @updateItem="updateRow($event)"
+            @deleteItem="del($event)"
+            @addItem="add($event)"
+            @updateItem="update($event)"
             class="rounded elevation-3" />
         </v-col>
          <v-col cols="4">
@@ -84,13 +84,13 @@ export default {
   methods: {
     ...mapActions('categories', ['deleteRow', 'addRow', 'updateRow', 'getCategories']),
 
-    deleteRow(row) {
+    del(row) {
       this.deleteRow(row);
     },
-    addRow(row) {
+    add(row) {
       this.addRow(row);
     },
-    updateRow(row) {
+    update(row) {
       this.updateRow(row);
     },
   },

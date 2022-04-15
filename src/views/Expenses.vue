@@ -113,18 +113,21 @@ export default {
     chartValues() {
       return Object.values(this.categoriesSum || 0);
     },
+    chartColors() {
+      const arr = [];
+      this.chartLabels.forEach((label) => {
+        const index = this.categories.findIndex((category) => category.text === label);
+        arr.push(this.categories[index].color);
+      });
+      return arr;
+    },
 
     data() {
       const obj = {
         labels: this.chartLabels || [],
         datasets: [{
           data: this.chartValues || [],
-          backgroundColor: [
-            '#FB8C00FF',
-            'rgb(25, 118, 210)',
-            'rgb(76, 175, 88)',
-            'rgb(255, 82, 82)',
-          ],
+          backgroundColor: this.chartColors || [],
           hoverOffset: 10,
         }],
       };

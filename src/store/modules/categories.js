@@ -28,7 +28,6 @@ export default {
       onSnapshot(fetch, (querySnapshot) => {
         querySnapshot.docChanges().forEach((change) => {
           if (change.type === 'added') {
-            console.log('change', change);
             cat.push({ id: change.doc.id, ...change.doc.data() });
           }
           if (change.type === 'modified') {
@@ -43,7 +42,7 @@ export default {
       commit('SET_CATEGORIES', cat);
     },
 
-    deleteRow(row) {
+    deleteRow(state, row) {
       const del = new Api('categories', row.id).delete2();
       del.then(() => {
         this.message = 'Usunięto wpis';
@@ -53,7 +52,7 @@ export default {
         console.log('err', err);
       });
     },
-    addRow(row) {
+    addRow(state, row) {
       const add = new Api('categories', null, row).createDoc2();
       add.then((result) => {
         console.log(result);
@@ -61,7 +60,7 @@ export default {
         console.log(err);
       });
     },
-    updateRow(row) {
+    updateRow(state, row) {
       const add = new Api('categories', row.id, row).updateDoc2();
       add.then((result) => {
         console.log(result);

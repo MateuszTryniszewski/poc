@@ -1,20 +1,5 @@
 <template>
   <v-navigation-drawer :value.sync="drawerState" app>
-<!--      <v-sheet
-        color="grey lighten-4"
-        class="pa-4"
-      >
-        <v-avatar
-          class="mb-4"
-          color="grey darken-1"
-          size="64"
-        ></v-avatar>
-
-        <div>john@vuetifyjs.com</div>
-      </v-sheet>
-
-      <v-divider></v-divider>
--->
       <v-list>
         <v-list-item v-for="link in links" :key="link.id" :to="link.url" link >
           <v-list-item-icon>
@@ -70,7 +55,7 @@ export default {
 
   computed: {
     drawerState() {
-      return this.$store.state.drawer;
+      return this.$store?.state?.drawer;
     },
   },
 };

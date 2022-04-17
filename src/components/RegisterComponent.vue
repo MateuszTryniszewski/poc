@@ -49,24 +49,20 @@
 
 <script>
 import { validationMixin } from 'vuelidate';
-import { required, email, minLength } from 'vuelidate/lib/validators';
+import { required, email } from 'vuelidate/lib/validators';
 import { auth } from '@/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 // @ is an alias to /src
 
 export default {
+  name: 'RegisterComponent',
+
   mixins: [validationMixin],
   validations: {
-    name: { required, minLength: minLength(3) },
     email: { required, email },
-    select: { required },
     password: { required },
     password2: { required },
-  },
-
-  name: 'RegisterComponent',
-  components: {
   },
 
   data: () => ({
@@ -101,12 +97,23 @@ export default {
   methods: {
     register() {
       this.$v.$touch();
+      if (this.chceckUnambiguousPasswords() === false) return false;
       createUserWithEmailAndPassword(auth, this.email, this.password).then((result) => {
-        const { user } = result;
-        console.log('user', user);
+        // eslint-disable-next-line no-shadow
+        const { email, uid } = result.user;
+        this.$store.dispatch('setUser', { email, uid });
+        this.$router.push('/');
       }).catch((err) => {
         this.$emit('error', err.message);
       });
+      return true;
+    },
+    chceckUnambiguousPasswords() {
+      if (this.password !== this.password2) {
+        this.$emit('error', 'Hasła nie są jednoznaczne');
+        return false;
+      }
+      return true;
     },
   },
 

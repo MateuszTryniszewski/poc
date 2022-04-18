@@ -117,7 +117,7 @@ export default {
       const arr = [];
       this.chartLabels.forEach((label) => {
         const index = this.categories.findIndex((category) => category.text === label);
-        arr.push(this.categories[index].color);
+        if (index >= 0) arr.push(this.categories[index].color);
       });
       return arr;
     },

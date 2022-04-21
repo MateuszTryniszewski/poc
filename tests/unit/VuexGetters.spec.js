@@ -1,5 +1,3 @@
-// import { createLocalVue, mount } from '@vue/test-utils';
-// eslint-disable-next-line import/no-named-as-default
 import { getters } from '../../src/store/modules/categories';
 
 const exampleCategories = [
@@ -69,15 +67,6 @@ const revenuesCorrectCategories = [
     color: '#2196F3FF',
   },
   {
-    id: 'v5r57NFj9wAZ8sTWEfUE',
-    revenues: true,
-    icon: 'fa-solid fa-house',
-    text: 'Mieszkanie',
-    expenses: false,
-    uid: 'global',
-    color: '#2196F3FF',
-  },
-  {
     id: 'NhOshQYaIoVeNNWMC6fq',
     revenues: true,
     color: '#4CAF50',
@@ -128,22 +117,12 @@ describe('Vuex Categories module getters test', () => {
     expect(result).toEqual(expensesCorrectCategories);
   });
 
-  // test('Categories module => revenuesCategories', () => {
-  //   // mock state
-  //   const state = {
-  //     categories: exampleCategories,
-  //   };
-  //   const result = getters.revenuesCategories(state);
-  //   console.log('state.categories', state);
-  //   expect(result).toEqual(revenuesCorrectCategories);
-  // });
-
-  test('yoyo', () => {
+  test('Categories module => revenuesCategories', () => {
+    // mock state
     const state = {
       categories: exampleCategories,
-      test: 'aaaa',
     };
-    const result = getters.te(state);
-    expect(result).toBe(4);
+    const result = getters.revenuesCategories(state);
+    expect(result).toEqual(revenuesCorrectCategories);
   });
 });

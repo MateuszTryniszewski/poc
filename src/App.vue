@@ -5,21 +5,32 @@
 <script>
 import { auth } from '@/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { mapActions } from 'vuex';
+// eslint-disable-next-line import/no-cycle
+import Api from './api';
 
 export default {
 
   data: () => ({
   }),
 
+  methods: {
+    ...mapActions({
+      setUser: 'user/setUser',
+    }),
+  },
+
   created() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const { email, uid } = user;
-        this.$store.dispatch('setUser', { email, uid });
+        this.setUser({ email, uid });
       }
     });
   },
 };
+
+export { Api };
 </script>
 
 <style lang="scss">

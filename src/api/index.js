@@ -3,15 +3,17 @@ import {
   collection, getDocs, addDoc, updateDoc, doc, deleteDoc,
   query, where,
 } from 'firebase/firestore';
-// eslint-disable-next-line import/no-cycle
-import store from '../store';
+import { getAuth } from 'firebase/auth';
+
+const auth = getAuth();
 
 class ApiService {
   constructor(entity, id = null, item) {
     this.entity = entity;
     this.id = id;
     this.item = item;
-    this.user = store?.getters?.currentUser?.uid;
+    // eslint-disable-next-line no-underscore-dangle
+    this.user = auth._currentUser.uid;
   }
 
   relativeUserPath() {

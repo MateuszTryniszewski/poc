@@ -45,7 +45,6 @@
 <script>
 /* eslint-disable no-param-reassign */
 // @ is an alias to /src
-import Api from '@/api';
 import { Doughnut } from 'vue-chartjs/legacy';
 import {
   Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, ArcElement,
@@ -53,6 +52,7 @@ import {
 import { onSnapshot } from 'firebase/firestore';
 import DataTable from '@/components/DataTable';
 import { mapActions, mapGetters } from 'vuex';
+import { Api } from '../App';
 import Navigation from '../components/Navigation';
 import TopBar from '../components/TopBar';
 

@@ -4,8 +4,8 @@ export const getters = {
   },
 };
 
-const mutations = {
-  toogleDrawer(state) {
+export const mutations = {
+  TOOGLE_DRAWER(state) {
     state.drawer = !state.drawer;
   },
   SET_USER(state, user) {
@@ -16,16 +16,16 @@ const mutations = {
   },
 };
 
-const actions = {
+export const actions = {
   setUser({ commit }, user) {
     commit('SET_USER', user);
   },
-  logout({ commit }) {
+  logoutUser({ commit }) {
     commit('LOGOUT');
   },
 };
 
-const state = {
+export const state = {
   drawer: true,
   user: null,
 };

@@ -12,6 +12,7 @@
 
 <script>
 import { signOut } from 'firebase/auth';
+import { mapGetters } from 'vuex';
 import { auth } from '../firebase';
 
 export default {
@@ -22,21 +23,21 @@ export default {
   }),
 
   computed: {
-    currentUser() {
-      return this.$store?.getters?.currentUser;
-    },
+    ...mapGetters({
+      currentUser: 'user/currentUser',
+    }),
   },
 
   methods: {
     onChangeDrawer() {
-      this.$store.commit('toogleDrawer');
+      this.$store.commit('TOOGLE_DRAWER');
     },
     darkMode() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     },
     logout() {
       signOut(auth).then(() => {
-        this.$store.dispatch('logout');
+        this.$store.dispatch('logoutUser');
         this.$router.push('/login');
       }).catch((err) => {
         console.log('wyloguj', err);

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "A6PwgupsOqyYLyeWbzKk",
+    "uid": "ZXYnOG7Q0kabIHjLv6HnX0EVQZE2",
+    "revenues": false,
+    "text": "Rozrywka",
+    "expenses": true,
+    "icon": "fa-solid fa-gamepad",
+    "color": "#FF9800FF"
+  },
+  {
+    "id": "Jx0KSvMN86asySx7vDQA",
+    "text": "Jedzenie",
+    "color": "#009688FF",
+    "expenses": true,
+    "revenues": false,
+    "uid": "ZXYnOG7Q0kabIHjLv6HnX0EVQZE2",
+    "icon": "fa-solid fa-utensils"
+  },
+  {
+    "id": "NhOshQYaIoVeNNWMC6fq",
+    "uid": "global",
+    "color": "#4CAF50",
+    "icon": "fa-solid fa-briefcase",
+    "text": "Umowa o prace",
+    "expenses": false,
+    "revenues": true
+  },
+  {
+    "id": "X0eYLmBjJ3P3izGBuTSA",
+    "revenues": false,
+    "text": "Samochód",
+    "color": "#F44336FF",
+    "expenses": true,
+    "uid": "ZXYnOG7Q0kabIHjLv6HnX0EVQZE2",
+    "icon": "fa-solid fa-car"
+  },
+  {
+    "id": "Yn5G155fMZCNmb0gTH9E",
+    "expenses": true,
+    "uid": "ZXYnOG7Q0kabIHjLv6HnX0EVQZE2",
+    "icon": "fa-solid fa-laptop",
+    "color": "#9C27B0FF",
+    "revenues": false,
+    "text": "Elektronika"
+  },
+  {
+    "id": "v5r57NFj9wAZ8sTWEfUE",
+    "icon": "fa-solid fa-house",
+    "text": "Mieszkanie",
+    "expenses": true,
+    "color": "#2196F3FF",
+    "uid": "global",
+    "revenues": false
+  }
+]

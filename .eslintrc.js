@@ -38,6 +38,12 @@ module.exports = {
         vue: 'never',
       },
     ],
+    // "object-curly-newline": ["error", {
+    //   "ObjectExpression": "never",
+    //   "ObjectPattern": { "multiline": false },
+    //   "ImportDeclaration": "never",
+    //   "ExportDeclaration": { "multiline": false, "minProperties": 5 }
+    // }]
   },
 
   overrides: [

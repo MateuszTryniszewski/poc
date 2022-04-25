@@ -13,7 +13,7 @@ class ApiService {
     this.id = id;
     this.item = item;
     // eslint-disable-next-line no-underscore-dangle
-    this.user = auth._currentUser.uid;
+    this.user = auth._currentUser?.uid;
   }
 
   relativeUserPath() {

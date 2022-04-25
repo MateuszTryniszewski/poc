@@ -1,56 +1,71 @@
-import { createLocalVue, mount } from '@vue/test-utils';
+import { createLocalVue, shallowMount } from '@vue/test-utils';
 import Vuex from 'vuex';
+import { actions, getters, mutations } from '@/store/modules/categories';
+import { getters as uGetters, actions as uActions, mutations as uMutations } from '@/store/modules/user';
+import Expenses from '@/views/Expenses';
 import Vuetify from 'vuetify';
-import { getters, actions, mutations } from '@/store/modules/user';
-import TopBar from '@/components/TopBar';
+import categoriesMock from './_mock_/categories.json';
+import expensesMock from './_mock_/expenses.json';
 
-const mockDataStore = {
-  user: {
-    email: 'trynio',
-    uid: '0kIHjLvabIHjLvEVQZE26H',
-  },
-};
-const userCheckState = {
-  email: 'trynio',
-  uid: '0kIHjLvabIHjLvEVQZE26H',
-};
-const userModule = {
-  user: {
+const VuexModule = {
+  categories: {
     actions,
-    state: mockDataStore,
     getters,
     mutations,
+    state: {
+      categories: categoriesMock,
+    },
+    namespaced: true,
+  },
+  user: {
+    actions: uActions,
+    state: {
+      user: {
+        email: 'trynio',
+        uid: '0kIHjLvabIHjLvEVQZE26H',
+      },
+    },
+    getters: uGetters,
+    mutations: uMutations,
     namespaced: true,
   },
 };
 
-describe('TopBar component tests', () => {
-  let store;
+describe('Expenses Vue testing', () => {
   let vuetify;
+  let store;
+  const localVue = createLocalVue();
+  localVue.use(Vuex);
+  // eslint-disable-next-line prefer-const
+  store = new Vuex.Store({ modules: VuexModule });
 
   beforeEach(() => {
     vuetify = new Vuetify();
   });
 
-  test('Check computed current user', async () => {
-    const localVue = createLocalVue();
-    localVue.use(Vuex);
-    store = new Vuex.Store({ modules: userModule });
-
-    const wrapper = mount(TopBar, {
-      store, localVue, vuetify,
-    });
-    await wrapper.vm.$nextTick();
-    expect(wrapper.vm.currentUser).toEqual(userCheckState);
+  const mountFunction = (options) => shallowMount(Expenses, {
+    localVue,
+    vuetify,
+    store,
+    stubs: ['router-link', 'ApiService'],
+    ...options,
   });
 
-  test('Getter logged user and next dispatch logout user', () => {
-    const localVue = createLocalVue();
-    localVue.use(Vuex);
-    store = new Vuex.Store({ modules: userModule });
-
-    expect(store.getters['user/currentUser']).toEqual(userCheckState);
-    store.dispatch('user/logoutUser');
-    expect(store.getters['user/currentUser']).toBe(null);
+  it('categoriesSum reduce funtion', async () => {
+    const wrapper = mountFunction(
+      {
+        data() {
+          return { rows: expensesMock };
+        },
+      },
+    );
+    await wrapper.vm.$nextTick();
+    expect(wrapper.vm.categoriesSum).toEqual({
+      Mieszkanie: 150,
+      Jedzenie: 150,
+      Rozrywka: 50,
+      Samochód: 100,
+      Elektronika: 50,
+    });
   });
 });

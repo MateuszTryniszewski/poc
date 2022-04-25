@@ -1,0 +1,126 @@
+[
+  {
+    "id": "0QnhWNyxAWDQI0b2KMGd",
+    "title": "test",
+    "amount": 50,
+    "category": {
+      "text": "Mieszkanie",
+      "color": "primary",
+      "icon": "fa-solid fa-house"
+    },
+    "date": "2022-04-08"
+  },
+  {
+    "id": "2OboDlmVAIJTOEbfRXfM",
+    "date": "2022-04-13",
+    "title": "nowy wpis223 bardzo długi tekst do sprawdzenia",
+    "amount": 50,
+    "category": {
+      "id": "Jx0KSvMN86asySx7vDQA",
+      "expenses": true,
+      "color": "#FB8C00FF",
+      "uid": "ZXYnOG7Q0kabIHjLv6HnX0EVQZE2",
+      "icon": "fa-solid fa-utensils",
+      "text": "Jedzenie"
+    }
+  },
+  {
+    "id": "2mOSCP7aJJYNfye4fnfK",
+    "category": {
+      "value": 4,
+      "icon": "fa-solid fa-gamepad",
+      "text": "Rozrywka",
+      "color": "warning"
+    },
+    "date": "2022-04-06",
+    "amount": 50,
+    "title": "kino"
+  },
+  {
+    "id": "7GiewM7E6RU4Ij2ecz1j",
+    "title": "Prąd",
+    "category": {
+      "color": "primary",
+      "icon": "fa-solid fa-house",
+      "text": "Mieszkanie",
+      "value": 1
+    },
+    "amount": 50,
+    "date": "2022-04-06"
+  },
+  {
+    "id": "HXtgV6SinqW32nGMftw3",
+    "category": {
+      "color": "success",
+      "text": "Jedzenie",
+      "icon": "fa-solid fa-utensils",
+      "value": 3
+    },
+    "title": "pizza",
+    "amount": 50,
+    "date": "2022-04-06"
+  },
+  {
+    "id": "JHbvX1nIOzzdW1TNAlaU",
+    "date": "2022-04-07",
+    "amount": 50,
+    "category": {
+      "value": 2,
+      "text": "Samochód",
+      "icon": "fa-solid fa-car",
+      "color": "error"
+    },
+    "title": "Paliwo"
+  },
+  {
+    "id": "KTzs9jbLGObJVU8VLBiF",
+    "amount": 50,
+    "title": "Sushi",
+    "date": "2022-04-07",
+    "category": {
+      "icon": "fa-solid fa-utensils",
+      "text": "Jedzenie",
+      "color": "success"
+    }
+  },
+  {
+    "id": "OB1MPTEtCGL3ocmvk3bK",
+    "category": {
+      "text": "Samochód",
+      "value": 2,
+      "color": "error",
+      "icon": "fa-solid fa-car"
+    },
+    "title": "demo",
+    "date": "2022-04-06",
+    "amount": 50
+  },
+  {
+    "id": "Vkbk1P3t0a8OaN3KZCrC",
+    "date": "2022-04-05",
+    "amount": 50,
+    "title": "biurko",
+    "category": {
+      "value": 1,
+      "icon": "fa-solid fa-house",
+      "color": "primary",
+      "text": "Mieszkanie"
+    }
+  },
+  {
+    "id": "k9T122ygmagva5CCJ4sE",
+    "amount": 50,
+    "date": "2022-04-15",
+    "category": {
+      "color": "#9C27B0FF",
+      "expenses": true,
+      "id": "Yn5G155fMZCNmb0gTH9E",
+      "uid": "ZXYnOG7Q0kabIHjLv6HnX0EVQZE2",
+      "revenues": false,
+      "icon": "fa-solid fa-laptop",
+      "text": "Elektronika"
+    },
+    "title": "Myszka",
+    "uid": "ZXYnOG7Q0kabIHjLv6HnX0EVQZE2"
+  }
+]

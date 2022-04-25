@@ -37,9 +37,7 @@ describe('TopBar component tests', () => {
     localVue.use(Vuex);
     store = new Vuex.Store({ modules: userModule });
 
-    const wrapper = mount(TopBar, {
-      store, localVue, vuetify,
-    });
+    const wrapper = mount(TopBar, { store, localVue, vuetify });
     await wrapper.vm.$nextTick();
     expect(wrapper.vm.currentUser).toEqual(userCheckState);
   });

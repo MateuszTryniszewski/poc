@@ -15,7 +15,7 @@ export const mutations = {
     state.categories = categories;
   },
 };
-const actions = {
+export const actions = {
   async getCategories({ commit }) {
     const cat = [];
     const fetch = await new Api('categories').getCategories();
@@ -66,7 +66,6 @@ const actions = {
 
 export const state = {
   categories: [],
-  test: [],
 };
 
 export default {

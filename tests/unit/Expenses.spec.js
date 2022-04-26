@@ -51,21 +51,47 @@ describe('Expenses Vue testing', () => {
     ...options,
   });
 
-  it('categoriesSum reduce funtion', async () => {
-    const wrapper = mountFunction(
-      {
-        data() {
-          return { rows: expensesMock };
-        },
-      },
-    );
-    await wrapper.vm.$nextTick();
+  test('categoriesSum reduce funtion', () => {
+    const wrapper = mountFunction({
+      data: () => ({ rows: expensesMock }),
+    });
+
     expect(wrapper.vm.categoriesSum).toEqual({
       Mieszkanie: 150,
       Jedzenie: 150,
       Rozrywka: 50,
       Samochód: 100,
       Elektronika: 50,
+    });
+  });
+
+  test('chartLabels', () => {
+    const wrapper = mountFunction({
+      data: () => ({ rows: expensesMock }),
+    });
+    expect(wrapper.vm.chartLabels).toEqual([
+      'Mieszkanie',
+      'Jedzenie',
+      'Rozrywka',
+      'Samochód',
+      'Elektronika',
+    ]);
+  });
+
+  test('chartValues', () => {
+    const wrapper = mountFunction({
+      data: () => ({ rows: expensesMock }),
+    });
+    expect(wrapper.vm.chartValues).toEqual([150, 150, 50, 100, 50]);
+  });
+
+  test('currentUser', () => {
+    const wrapper = mountFunction({
+      data: () => ({ rows: expensesMock }),
+    });
+    expect(wrapper.vm.currentUser).toEqual({
+      email: 'trynio',
+      uid: '0kIHjLvabIHjLvEVQZE26H',
     });
   });
 });

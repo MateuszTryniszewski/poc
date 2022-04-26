@@ -21,7 +21,7 @@
             class="rounded elevation-3" />
         </v-col>
          <v-col cols="4">
-        <Doughnut :chart-data="data"
+        <Doughnut :chart-data="chartData"
           :key="reRenderChart"
           style="border: 1px solid #ccc;"
           class="rounded pa-4 elevation-3" />
@@ -104,6 +104,7 @@ export default {
   computed: {
     ...mapGetters({
       categories: 'categories/expensesCategories',
+      currentUser: 'user/currentUser',
     }),
 
     chartLabels() {
@@ -122,7 +123,7 @@ export default {
       return arr;
     },
 
-    data() {
+    chartData() {
       const obj = {
         labels: this.chartLabels || [],
         datasets: [{
@@ -132,10 +133,6 @@ export default {
         }],
       };
       return obj;
-    },
-
-    currentUser() {
-      return this.$store?.getters?.currentUser;
     },
 
     categoriesSum() {

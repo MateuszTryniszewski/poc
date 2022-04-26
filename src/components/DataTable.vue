@@ -128,6 +128,7 @@
 
 <script>
 import _cloneDeep from 'lodash/cloneDeep';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'DataTable',
@@ -157,11 +158,11 @@ export default {
   }),
 
   computed: {
+    ...mapGetters({
+      userId: 'user/userId',
+    }),
     formTitle() {
       return this.currentItem?.title ? 'Edycja' : 'Dodaj';
-    },
-    userId() {
-      return this.$store?.getters?.currentUser?.uid;
     },
   },
 

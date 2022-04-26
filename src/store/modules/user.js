@@ -2,6 +2,9 @@ export const getters = {
   currentUser(state) {
     return state.user;
   },
+  userId(state) {
+    return state.user.uid;
+  },
 };
 
 export const mutations = {

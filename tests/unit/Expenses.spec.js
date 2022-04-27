@@ -47,7 +47,7 @@ describe('Expenses Vue testing', () => {
     localVue,
     vuetify,
     store,
-    stubs: ['router-link', 'ApiService'],
+    stubs: ['router-link', 'ApiService', 'getData', 'getCategories'],
     ...options,
   });
 
@@ -93,5 +93,18 @@ describe('Expenses Vue testing', () => {
       email: 'trynio',
       uid: '0kIHjLvabIHjLvEVQZE26H',
     });
+  });
+
+  test('chartColors', () => {
+    const wrapper = mountFunction({
+      data: () => ({ rows: expensesMock }),
+    });
+    expect(wrapper.vm.chartColors).toEqual([
+      '#2196F3FF',
+      '#009688FF',
+      '#FF9800FF',
+      '#F44336FF',
+      '#9C27B0FF',
+    ]);
   });
 });

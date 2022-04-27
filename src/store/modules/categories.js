@@ -31,7 +31,7 @@ export const actions = {
         if (change.type === 'removed') {
           cat.filter((item) => item.id !== change.doc.id);
         }
-      });
+      }, (error) => console.log(error));
     });
     commit('SET_CATEGORIES', cat);
   },

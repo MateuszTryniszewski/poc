@@ -163,7 +163,7 @@ export default {
           if (change.type === 'removed') {
             this.rows = this.rows.filter((item) => item.id !== change.doc.id);
           }
-        });
+        }, (error) => console.log(error));
       });
     },
 
@@ -199,7 +199,7 @@ export default {
   },
 
   created() {
-    this.getData();
+    // this.getData();
     this.getCategories();
   },
 };

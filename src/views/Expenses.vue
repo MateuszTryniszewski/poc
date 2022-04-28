@@ -3,6 +3,16 @@
     <TopBar></TopBar>
     <Navigation></Navigation>
     <v-main>
+        <v-card>
+          <v-tabs
+            center-active
+            v-model="tab"
+            :value="ta"
+          >
+            <v-tab v-for="month in months" :key="month.value"> {{ month.label }} </v-tab>
+          </v-tabs>
+        </v-card>
+
       <v-container class="py-8 px-6" fluid>
         <v-row>
           <v-col cols="12" class="py-0">
@@ -89,6 +99,57 @@ export default {
       { text: 'Kwota', value: 'amount', type: 'number' },
       { text: 'Akcje', value: 'actions', sortable: false },
     ],
+    months: [
+      {
+        value: 1,
+        label: 'Styczeń',
+      },
+      {
+        value: 2,
+        label: 'Luty',
+      },
+      {
+        value: 3,
+        label: 'Marzec',
+      },
+      {
+        value: 4,
+        label: 'Kwiecień',
+      },
+      {
+        value: 5,
+        label: 'Maj',
+      },
+      {
+        value: 6,
+        label: 'Czerwiec',
+      },
+      {
+        value: 7,
+        label: 'Lipiec',
+      },
+      {
+        value: 8,
+        label: 'Sierpień',
+      },
+      {
+        value: 9,
+        label: 'Wrzesień',
+      },
+      {
+        value: 10,
+        label: 'Październik',
+      },
+      {
+        value: 11,
+        label: 'Listopad',
+      },
+      {
+        value: 12,
+        label: 'Grudzień',
+      },
+    ],
+    tab: new Date(Date.now()).getMonth(),
   }),
 
   watch: {
@@ -199,7 +260,7 @@ export default {
   },
 
   created() {
-    // this.getData();
+    this.getData();
     this.getCategories();
   },
 };

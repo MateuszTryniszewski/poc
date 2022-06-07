@@ -3,8 +3,8 @@
     <v-data-table :headers="headers"
       :items="rows"
       :items-per-page="-1"
-      :sortDesc="true"
-      sort-by="date"
+      :sortDesc="[true, true]"
+      :sort-by="[ 'date', 'timestamp']"
       class="rounded">
       <template v-slot:top>
         <v-toolbar flat>
@@ -162,7 +162,7 @@ export default {
       userId: 'user/userId',
     }),
     formTitle() {
-      return this.currentItem?.title ? 'Edycja' : 'Dodaj';
+      return this.currentItem?.id ? 'Edycja' : 'Dodaj';
     },
   },
 
@@ -203,6 +203,7 @@ export default {
         this.currentItem.category = this.categories
           .find((cat) => cat.text === this.currentItem.category.text);
       }
+      this.currentItem.timestamp = Date.now();
       // eslint-disable-next-line no-unused-expressions
       this.currentItem.id
         ? this.$emit('updateItem', this.currentItem)
@@ -235,8 +236,9 @@ export default {
           initObject[element.value] = { value: null };
         }
       });
-      this.defaultItem = initObject;
-      this.currentItem = initObject;
+
+      this.defaultItem = { ...initObject };
+      this.currentItem = { ...initObject };
     },
   },
   created() {

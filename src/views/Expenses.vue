@@ -3,15 +3,15 @@
     <TopBar></TopBar>
     <Navigation></Navigation>
     <v-main>
-        <v-card>
+        <!-- <v-card>
           <v-tabs
             center-active
             v-model="tab"
-            :value="ta"
+            :value="tab"
           >
             <v-tab v-for="month in months" :key="month.value"> {{ month.label }} </v-tab>
           </v-tabs>
-        </v-card>
+        </v-card> -->
 
       <v-container class="py-8 px-6" fluid>
         <v-row>
@@ -96,6 +96,7 @@ export default {
         inputType: 'options',
       },
       { text: 'Data', value: 'date', type: 'date' },
+      { text: 'timestamp', value: 'timestamp', align: ' d-none' },
       { text: 'Kwota', value: 'amount', type: 'number' },
       { text: 'Akcje', value: 'actions', sortable: false },
     ],
